@@ -50,16 +50,16 @@ public class JFlatLog {
     private static JFlatLog instance;
 
     private boolean isLoggingToFile = true;
-    private int logLevel = LEVEL_INFO;
-    private String logfileTimestampFormat = TIMESTAMP_FORMAT_LOGFILE;
-    private String consoleTimestampFormat = TIMESTAMP_FORMAT_CONSOLE;
+    private int logLevel = JFlatLog.LEVEL_INFO;
+    private String logfileTimestampFormat = JFlatLog.TIMESTAMP_FORMAT_LOGFILE;
+    private String consoleTimestampFormat = JFlatLog.TIMESTAMP_FORMAT_CONSOLE;
 
     private File logFile;
     private boolean appendLog;
     private boolean hasInitialized;
     private BufferedWriter bw;
     private final StringBuilder logMessageBuilder = new StringBuilder();
-
+    private final StringBuilder refReplacer = new StringBuilder();
     private LogFormatHandler logFormatHandler = new DefaultLogFormatHandler();
 
     /**
@@ -111,7 +111,7 @@ public class JFlatLog {
         try {
             bw = new BufferedWriter(new FileWriter(file, appendLog));
         } catch (IOException e) {
-            log(LEVEL_ERROR, null, LOGGER_TAG, "Failed to init logging! -", e, true, (Object[]) null);
+            log(JFlatLog.LEVEL_ERROR, null, JFlatLog.LOGGER_TAG, "Failed to init logging! -", e, true, (Object[]) null);
         }
 
         hasInitialized = true;
@@ -127,8 +127,9 @@ public class JFlatLog {
         logMessageBuilder.append("[").append(timestamp).append("] ");
 
         // Append the log level tag.
-        if (tag != null && !tag.isEmpty())
+        if (tag != null && !tag.isEmpty()) {
             logMessageBuilder.append("[").append(tag).append("]");
+        }
 
         // Append the category.
         if (category != null && !category.isEmpty()) {
@@ -169,7 +170,7 @@ public class JFlatLog {
             bw.newLine();
             bw.flush();
         } catch (IOException e) {
-            log(LEVEL_ERROR, null, LOGGER_TAG, "Failed to write log message to log file! -", e, true, (Object[]) null);
+            log(JFlatLog.LEVEL_ERROR, null, JFlatLog.LOGGER_TAG, "Failed to write log message to log file! -", e, true, (Object[]) null);
         }
     }
 
@@ -178,9 +179,14 @@ public class JFlatLog {
             return msg;
         for (int i = 0; i < args.length; i++) {
             Object arg = args[i];
-            if (arg == null)
+            if (arg == null) {
                 arg = "null";
-            msg = msg.replace("{" + i + "}", arg.toString());
+            }
+
+            refReplacer.delete(0, refReplacer.length());
+            refReplacer.append("{").append(i).append("}");
+
+            msg = msg.replace(refReplacer.toString(), arg.toString());
         }
         return msg;
     }
@@ -197,7 +203,7 @@ public class JFlatLog {
             logFile = null;
             hasInitialized = false;
         } catch (IOException e) {
-            log(LEVEL_ERROR, null, LOGGER_TAG, "Failed to close log file writer!", e, true, (Object[]) null);
+            log(JFlatLog.LEVEL_ERROR, null, JFlatLog.LOGGER_TAG, "Failed to close log file writer!", e, true, (Object[]) null);
         }
     }
 
@@ -230,7 +236,7 @@ public class JFlatLog {
     }
 
     public void fine(String category, String message, Throwable ex, Object... objs) {
-        log(LEVEL_FINE, "FINE", category, message, ex, false, objs);
+        log(JFlatLog.LEVEL_FINE, "FINE", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
@@ -248,7 +254,7 @@ public class JFlatLog {
     }
 
     public void debug(String category, String message, Throwable ex, Object... objs) {
-        log(LEVEL_DEBUG, "DEBUG", category, message, ex, false, objs);
+        log(JFlatLog.LEVEL_DEBUG, "DEBUG", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
@@ -266,7 +272,7 @@ public class JFlatLog {
     }
 
     public void info(String category, String message, Throwable ex, Object... objs) {
-        log(LEVEL_INFO, "INFO", category, message, ex, false, objs);
+        log(JFlatLog.LEVEL_INFO, "INFO", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
@@ -284,7 +290,7 @@ public class JFlatLog {
     }
 
     public void warn(String category, String message, Throwable ex, Object... objs) {
-        log(LEVEL_WARN, "WARN", category, message, ex, false, objs);
+        log(JFlatLog.LEVEL_WARN, "WARN", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
@@ -302,7 +308,7 @@ public class JFlatLog {
     }
 
     public void error(String category, String message, Throwable ex, Object... objs) {
-        log(LEVEL_ERROR, "ERROR", category, message, ex, false, objs);
+        log(JFlatLog.LEVEL_ERROR, "ERROR", category, message, ex, false, objs);
     }
     // @endregion ************************************************************************************
 
@@ -320,7 +326,7 @@ public class JFlatLog {
     }
 
     public void severe(String category, String message, Throwable ex, Object... objs) {
-        log(LEVEL_SEVERE, "SEVERE", category, message, ex, false, objs);
+        log(JFlatLog.LEVEL_SEVERE, "SEVERE", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
@@ -424,9 +430,10 @@ public class JFlatLog {
      * @see #hasLoggingCapabilities()
      */
     public static final JFlatLog get() {
-        if (instance == null)
-            instance = new JFlatLog();
-        return instance;
+        if (JFlatLog.instance == null) {
+            JFlatLog.instance = new JFlatLog();
+        }
+        return JFlatLog.instance;
     }
 
 }
