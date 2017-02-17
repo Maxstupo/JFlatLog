@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.github.maxstupo.jflatlog.exception.AlreadyInitializedException;
 import com.github.maxstupo.jflatlog.formatter.DefaultLogFormatHandler;
-import com.github.maxstupo.jflatlog.formatter.LogFormatHandler;
+import com.github.maxstupo.jflatlog.formatter.ILogFormatHandler;
 
 /**
  * JFlatLog is a lightweight logger that supports both log-to-file and log-to-console.
@@ -44,7 +44,10 @@ public class JFlatLog {
     /** The tag/category for the logger, this is used for exceptions. */
     public static final String LOGGER_TAG = JFlatLog.class.getSimpleName();
 
+    /** The default time format for log files. */
     public static final String TIMESTAMP_FORMAT_LOGFILE = "yyyy-MM-dd_hh-mm-ss";
+
+    /** The default time format for console. */
     public static final String TIMESTAMP_FORMAT_CONSOLE = "yyyy/MM/dd hh:mm:ss a";
 
     private static JFlatLog instance;
@@ -60,7 +63,7 @@ public class JFlatLog {
     private BufferedWriter bw;
     private final StringBuilder logMessageBuilder = new StringBuilder();
     private final StringBuilder refReplacer = new StringBuilder();
-    private LogFormatHandler logFormatHandler = new DefaultLogFormatHandler();
+    private ILogFormatHandler logFormatHandler = new DefaultLogFormatHandler();
 
     /**
      * Create a new logger without log-to-file capabilities.
@@ -117,6 +120,24 @@ public class JFlatLog {
         hasInitialized = true;
     }
 
+    /**
+     * Logs the given message to console and/or file.
+     * 
+     * @param level
+     *            the log level.
+     * @param tag
+     *            the tag of the message.
+     * @param category
+     *            the category of the message.
+     * @param message
+     *            the message.
+     * @param ex
+     *            the exception that invoked this message.
+     * @param disableLogToFile
+     *            true to disable this message from being logged into the log file.
+     * @param args
+     *            objects to replace {0},{1},etc....
+     */
     public void log(int level, String tag, String category, String message, Throwable ex, boolean disableLogToFile, Object... args) {
         if (logLevel > level)
             return;
@@ -223,108 +244,132 @@ public class JFlatLog {
     }
 
     // @region ****************************** FINE LOG METHODS ****************************************
+    @SuppressWarnings("javadoc")
     public void fine(String category, String message, Object... objs) {
         fine(category, message, null, objs);
     }
 
+    @SuppressWarnings("javadoc")
     public void fine(String category, String message) {
         fine(category, message, null, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void fine(String category, String message, Throwable ex) {
         fine(category, message, ex, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void fine(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_FINE, "FINE", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** DEBUG LOG METHODS ***************************************
+    @SuppressWarnings("javadoc")
     public void debug(String category, String message, Object... objs) {
         debug(category, message, null, objs);
     }
 
+    @SuppressWarnings("javadoc")
     public void debug(String category, String message) {
         debug(category, message, null, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void debug(String category, String message, Throwable ex) {
         debug(category, message, ex, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void debug(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_DEBUG, "DEBUG", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** INFO LOG METHODS ****************************************
+    @SuppressWarnings("javadoc")
     public void info(String category, String message, Object... objs) {
         info(category, message, null, objs);
     }
 
+    @SuppressWarnings("javadoc")
     public void info(String category, String message) {
         info(category, message, null, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void info(String category, String message, Throwable ex) {
         info(category, message, ex, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void info(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_INFO, "INFO", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** WARN LOG METHODS ****************************************
+    @SuppressWarnings("javadoc")
     public void warn(String category, String message, Object... objs) {
         warn(category, message, null, objs);
     }
 
+    @SuppressWarnings("javadoc")
     public void warn(String category, String message) {
         warn(category, message, null, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void warn(String category, String message, Throwable ex) {
         warn(category, message, ex, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void warn(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_WARN, "WARN", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** ERROR LOG METHODS ***************************************
+    @SuppressWarnings("javadoc")
     public void error(String category, String message, Object... objs) {
         error(category, message, null, objs);
     }
 
+    @SuppressWarnings("javadoc")
     public void error(String category, String message) {
         error(category, message, null, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void error(String category, String message, Throwable ex) {
         error(category, message, ex, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void error(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_ERROR, "ERROR", category, message, ex, false, objs);
     }
     // @endregion ************************************************************************************
 
     // @region ****************************** SEVERE LOG METHODS **************************************
+    @SuppressWarnings("javadoc")
     public void severe(String category, String message, Object... objs) {
         severe(category, message, null, objs);
     }
 
+    @SuppressWarnings("javadoc")
     public void severe(String category, String message) {
         severe(category, message, null, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void severe(String category, String message, Throwable ex) {
         severe(category, message, ex, (Object[]) null);
     }
 
+    @SuppressWarnings("javadoc")
     public void severe(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_SEVERE, "SEVERE", category, message, ex, false, objs);
     }
@@ -341,10 +386,22 @@ public class JFlatLog {
         this.isLoggingToFile = isLoggingToFile;
     }
 
+    /**
+     * Sets the format used for the log files.
+     * 
+     * @param logfileTimestampFormat
+     *            the format used for the log files.
+     */
     public void setLogfileTimestampFormat(String logfileTimestampFormat) {
         this.logfileTimestampFormat = logfileTimestampFormat;
     }
 
+    /**
+     * Sets the format for the console time.
+     * 
+     * @param consoleTimestampFormat
+     *            the format.
+     */
     public void setConsoleTimestampFormat(String consoleTimestampFormat) {
         this.consoleTimestampFormat = consoleTimestampFormat;
     }
@@ -355,7 +412,7 @@ public class JFlatLog {
      * @param logFormatHandler
      *            The interface for formatting messages that get logged to file.
      */
-    public void setLogFormatHandler(LogFormatHandler logFormatHandler) {
+    public void setLogFormatHandler(ILogFormatHandler logFormatHandler) {
         this.logFormatHandler = logFormatHandler;
     }
 
@@ -379,6 +436,11 @@ public class JFlatLog {
         return appendLog;
     }
 
+    /**
+     * Returns true if the logger is logging to the log file.
+     * 
+     * @return true if the logger is logging to the log file.
+     */
     public boolean isLoggingToFile() {
         return isLoggingToFile;
     }
@@ -393,16 +455,26 @@ public class JFlatLog {
     }
 
     /**
-     * @return See {@link #setLogFormatHandler(LogFormatHandler)} for details.
+     * @return See {@link #setLogFormatHandler(ILogFormatHandler)} for details.
      */
-    public LogFormatHandler getLogFormatHandler() {
+    public ILogFormatHandler getLogFormatHandler() {
         return logFormatHandler;
     }
 
+    /**
+     * Returns the time format for logfile names.
+     * 
+     * @return the time format for logfile names.
+     */
     public String getLogfileTimestampFormat() {
         return logfileTimestampFormat;
     }
 
+    /**
+     * Returns the console format for time.
+     * 
+     * @return the console format for time.
+     */
     public String getConsoleTimestampFormat() {
         return consoleTimestampFormat;
     }
