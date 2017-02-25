@@ -138,7 +138,7 @@ public class JFlatLog {
      * @param args
      *            objects to replace {0},{1},etc....
      */
-    public void log(int level, String tag, String category, String message, Throwable ex, boolean disableLogToFile, Object... args) {
+    public synchronized void log(int level, String tag, String category, String message, Throwable ex, boolean disableLogToFile, Object... args) {
         if (logLevel > level)
             return;
         logMessageBuilder.delete(0, logMessageBuilder.length());
@@ -245,132 +245,132 @@ public class JFlatLog {
 
     // @region ****************************** FINE LOG METHODS ****************************************
     @SuppressWarnings("javadoc")
-    public void fine(String category, String message, Object... objs) {
+    public synchronized void fine(String category, String message, Object... objs) {
         fine(category, message, null, objs);
     }
 
     @SuppressWarnings("javadoc")
-    public void fine(String category, String message) {
+    public synchronized void fine(String category, String message) {
         fine(category, message, null, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void fine(String category, String message, Throwable ex) {
+    public synchronized void fine(String category, String message, Throwable ex) {
         fine(category, message, ex, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void fine(String category, String message, Throwable ex, Object... objs) {
+    public synchronized void fine(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_FINE, "FINE", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** DEBUG LOG METHODS ***************************************
     @SuppressWarnings("javadoc")
-    public void debug(String category, String message, Object... objs) {
+    public synchronized void debug(String category, String message, Object... objs) {
         debug(category, message, null, objs);
     }
 
     @SuppressWarnings("javadoc")
-    public void debug(String category, String message) {
+    public synchronized void debug(String category, String message) {
         debug(category, message, null, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void debug(String category, String message, Throwable ex) {
+    public synchronized void debug(String category, String message, Throwable ex) {
         debug(category, message, ex, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void debug(String category, String message, Throwable ex, Object... objs) {
+    public synchronized void debug(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_DEBUG, "DEBUG", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** INFO LOG METHODS ****************************************
     @SuppressWarnings("javadoc")
-    public void info(String category, String message, Object... objs) {
+    public synchronized void info(String category, String message, Object... objs) {
         info(category, message, null, objs);
     }
 
     @SuppressWarnings("javadoc")
-    public void info(String category, String message) {
+    public synchronized void info(String category, String message) {
         info(category, message, null, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void info(String category, String message, Throwable ex) {
+    public synchronized void info(String category, String message, Throwable ex) {
         info(category, message, ex, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void info(String category, String message, Throwable ex, Object... objs) {
+    public synchronized void info(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_INFO, "INFO", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** WARN LOG METHODS ****************************************
     @SuppressWarnings("javadoc")
-    public void warn(String category, String message, Object... objs) {
+    public synchronized void warn(String category, String message, Object... objs) {
         warn(category, message, null, objs);
     }
 
     @SuppressWarnings("javadoc")
-    public void warn(String category, String message) {
+    public synchronized void warn(String category, String message) {
         warn(category, message, null, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void warn(String category, String message, Throwable ex) {
+    public synchronized void warn(String category, String message, Throwable ex) {
         warn(category, message, ex, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void warn(String category, String message, Throwable ex, Object... objs) {
+    public synchronized void warn(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_WARN, "WARN", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
 
     // @region ****************************** ERROR LOG METHODS ***************************************
     @SuppressWarnings("javadoc")
-    public void error(String category, String message, Object... objs) {
+    public synchronized void error(String category, String message, Object... objs) {
         error(category, message, null, objs);
     }
 
     @SuppressWarnings("javadoc")
-    public void error(String category, String message) {
+    public synchronized void error(String category, String message) {
         error(category, message, null, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void error(String category, String message, Throwable ex) {
+    public synchronized void error(String category, String message, Throwable ex) {
         error(category, message, ex, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void error(String category, String message, Throwable ex, Object... objs) {
+    public synchronized void error(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_ERROR, "ERROR", category, message, ex, false, objs);
     }
     // @endregion ************************************************************************************
 
     // @region ****************************** SEVERE LOG METHODS **************************************
     @SuppressWarnings("javadoc")
-    public void severe(String category, String message, Object... objs) {
+    public synchronized void severe(String category, String message, Object... objs) {
         severe(category, message, null, objs);
     }
 
     @SuppressWarnings("javadoc")
-    public void severe(String category, String message) {
+    public synchronized void severe(String category, String message) {
         severe(category, message, null, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void severe(String category, String message, Throwable ex) {
+    public synchronized void severe(String category, String message, Throwable ex) {
         severe(category, message, ex, (Object[]) null);
     }
 
     @SuppressWarnings("javadoc")
-    public void severe(String category, String message, Throwable ex, Object... objs) {
+    public synchronized void severe(String category, String message, Throwable ex, Object... objs) {
         log(JFlatLog.LEVEL_SEVERE, "SEVERE", category, message, ex, false, objs);
     }
     // @endregion *************************************************************************************
